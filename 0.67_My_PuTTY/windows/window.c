@@ -6744,8 +6744,33 @@ static int TranslateKey(UINT message, WPARAM wParam, LPARAM lParam,
 	    return p - output;
 	}
 	if ((code == 1 || code == 4) &&
-	    conf_get_int(conf, CONF_rxvt_homeend)) {
+	    conf_get_int(conf, CONF_rxvt_homeend) == 1) {
+	    // rxvt
 	    p += sprintf((char *) p, code == 1 ? "\x1B[H" : "\x1BOw");
+	    return p - output;
+	}
+	if ((code == 1 || code == 4) &&
+	    conf_get_int(conf, CONF_rxvt_homeend) == 2) {
+	    // urxvt
+	    p += sprintf((char *) p, code == 1 ? "\x1B[7~" : "\x1B[8~");
+	    return p - output;
+	}
+	if ((code == 1 || code == 4) &&
+	    conf_get_int(conf, CONF_rxvt_homeend) == 3) {
+	    // xterm
+	    p += sprintf((char *) p, code == 1 ? "\x1BOH" : "\x1BOF");
+	    return p - output;
+	}
+	if ((code == 1 || code == 4) &&
+	    conf_get_int(conf, CONF_rxvt_homeend) == 4) {
+	    // FreeBSD1
+	    p += sprintf((char *) p, code == 1 ? "\x1B[H" : "\x1B[H");
+	    return p - output;
+	}
+	if ((code == 1 || code == 4) &&
+	    conf_get_int(conf, CONF_rxvt_homeend) == 5) {
+	    // FreeBSD2
+	    p += sprintf((char *) p, code == 1 ? "\x1BOH" : "\x1B[?1l\x1B>");
 	    return p - output;
 	}
 	if (code) {
